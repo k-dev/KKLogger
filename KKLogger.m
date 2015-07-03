@@ -1,6 +1,5 @@
 //
-//  LogManager.m
-//  testSuspending
+//  KKLogger.m
 //
 //  Created by Kirill on 1/27/15.
 //  Copyright (c) 2015 Kirill. All rights reserved.
@@ -8,21 +7,21 @@
 
 #import "LogManager.h"
 
-@interface LogManager ()
+@interface KKLogger ()
 
 @property (strong, nonatomic) NSString* logFilePath;
 @property (strong, nonatomic) NSDateFormatter *df;
 
 @end
 
-@implementation LogManager
+@implementation KKLogger
 {
     FILE *_file;
 }
 
 + (instancetype)sharedInstance
 {
-    static LogManager * sSharedInstance = nil;
+    static KKLogger * sSharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sSharedInstance = [self new];
