@@ -70,7 +70,7 @@
     _logFilePath = path;
     
     _file = fopen([_logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "aw");
-    fprintf(_file, "%s\n", "------------------- Started App ---------------------");
+    fprintf(_file, "%s\n", "*** NEW SESSION ***");
     fflush(_file);
 }
 
@@ -81,10 +81,11 @@
 
 - (void)logToFile:(NSString *)logText
 {
-    time_t tm = time(NULL);
-    NSString *humanDate = [_df stringFromDate:[NSDate date]];
-    fprintf(_file, "|%s| |%02ld:%02ld:%02ld| |%lld|", [humanDate cStringUsingEncoding:NSUTF8StringEncoding], (tm / 3600) % 24, tm % 3600 / 60, tm % 60, (int64_t)tm);
-    fprintf(_file, " %s\n", [logText cStringUsingEncoding:NSUTF8StringEncoding]);
+    NSDate *date = [NSDate date];
+    NSString *humanDate = [_df stringFromDate:date];
+//    double milliseconds = [date timeIntervalSinceReferenceDate];
+    fprintf(_file, "%s: ", [humanDate cStringUsingEncoding:NSUTF8StringEncoding]);
+    fprintf(_file, "%s\n", [logText cStringUsingEncoding:NSUTF8StringEncoding]);
     NSLog(@"%@", logText);
     fflush(_file);
 }
