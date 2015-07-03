@@ -9,7 +9,7 @@
 
 @interface KKLogger ()
 
-@property (strong, nonatomic) NSString* logFilePath;
+@property (strong, nonatomic) NSString *logsFilePath;
 @property (strong, nonatomic) NSDateFormatter *df;
 
 @end
@@ -32,7 +32,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
+    if ((self = [super init]))
     {
         [self commonInit];
     }
@@ -58,19 +58,15 @@
 - (void)initLogFile
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirPath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    
-    NSString *path = documentDirPath;
-    NSFileManager* manager = [NSFileManager new];
-    if (![manager fileExistsAtPath:path])
+    NSString *documentsDirPath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:documentsDirPath])
     {
-        [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    path = [path stringByAppendingPathComponent:@"log.txt"];
-    _logFilePath = path;
+    _logsFilePath = [documentsDirPath stringByAppendingPathComponent:@"log.txt"];
     
-    _file = fopen([_logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "aw");
-    fprintf(_file, "%s\n", "*** NEW SESSION ***");
+    _file = fopen([_logsFilePath cStringUsingEncoding:NSASCIIStringEncoding], "aw");
+    fprintf(_file, "*** NEW SESSION ***\n");
     fflush(_file);
 }
 
